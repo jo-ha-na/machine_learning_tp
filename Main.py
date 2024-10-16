@@ -194,8 +194,9 @@ def boxplots(df):
     plt.show()
 
 def regression(data):
+    print("Début de la modélisation par régression linéaire...")
     # Feature engineering: selection des attributs importants
-    features = ['Surface reelle bati', 'Surface terrain']
+    features = ['Surface reelle bati', 'Surface terrain', 'Nombre pieces principales']
     X = data[features].values
     y = data['Valeur fonciere'].values
     
@@ -236,6 +237,13 @@ def regression(data):
 
         plt.plot(y_test, p(y_test), color='magenta')
         plt.show()
+
+        residuals = y_test - predictions
+        plt.figure(figsize=(10, 6))
+        sns.histplot(residuals, kde=True)
+        plt.xlabel("Résidus")
+        plt.title(f"Distribution des Résidus - {name}")
+        plt.show()
     
     # Visualize the Decision Tree model
     tree = export_text(models["Decision Tree Regressor"], feature_names=features)
@@ -250,7 +258,7 @@ def main():
     #preparation()
     df = pd.read_csv('clean_93000_prepared.csv')
     #find_optimal_clusters(df[["Valeur fonciere", "Surface reelle bati", 'Surface terrain']])
-    segment_data_kmeans(df[["Valeur fonciere", "Surface reelle bati", 'Surface terrain']])
+    segment_data_kmeans(df[["Valeur fonciere", "Surface reelle bati", 'Surface terrain','Nombre pieces principales']])
     #boxplots(df)
     regression(df)
 main()
