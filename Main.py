@@ -195,8 +195,10 @@ def boxplots(df):
 
 def regression(data):
     print("Début de la modélisation par régression linéaire...")
+    data = data[data['Cluster'] == 3]
     # Feature engineering: selection des attributs importants
     features = ['Surface reelle bati', 'Surface terrain', 'Nombre pieces principales']
+
     X = data[features].values
     y = data['Valeur fonciere'].values
     
@@ -251,6 +253,11 @@ def regression(data):
 
 
 
+def createcsvsegment(df):
+    for i in range(5):
+        df[df['Cluster'] == i].to_csv('clean_93000_prepared_segment'+ str(i) + '.csv', index=False)  
+
+
 def main():
     
     #createCSV()
@@ -258,9 +265,13 @@ def main():
     #preparation()
     df = pd.read_csv('clean_93000_prepared.csv')
     #find_optimal_clusters(df[["Valeur fonciere", "Surface reelle bati", 'Surface terrain']])
-    segment_data_kmeans(df[["Valeur fonciere", "Surface reelle bati", 'Surface terrain','Nombre pieces principales']])
+    df = segment_data_kmeans(df[["Valeur fonciere", "Surface reelle bati", 'Surface terrain','Nombre pieces principales']])
+
+   
+    #print(df)
     #boxplots(df)
-    regression(df)
+    #regression(df)
+    createcsvsegment(df)
 main()
 
 
